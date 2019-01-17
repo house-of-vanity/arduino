@@ -23,7 +23,7 @@ void setup() {
   //u8g2.clearBuffer();
   u8g2.setFont(u8g2_font_unifont_t_cyrillic);
   Serial.begin(9600);
-  Serial.println("Ready\n");
+  Serial.println("Ready");
   u8g2.drawStr(0, 12, "Ready");
   u8g2.sendBuffer();
   while (!Serial) {
