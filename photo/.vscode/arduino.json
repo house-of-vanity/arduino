@@ -1,3 +1,6 @@
 {
-    "port": "/dev/ttyACM0"
+    "port": "/dev/ttyACM0",
+    "programmer": "ArduinoISP",
+    "board": "arduino:avr:uno",
+    "sketch": "photo.ino"
 }
