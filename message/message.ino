@@ -1,9 +1,9 @@
 #include <U8g2lib.h>
 
-#define MESSAGE 100
+#define MESSAGE 64
 #define FONT_SIZE_TITLE 10
 #define FONT_SIZE_TEXT 7
-#define SPACING 2
+#define SPACING 10
 #define LCD_WIDTH 128
 #define LCD_HEIGHT 64
 
@@ -44,9 +44,7 @@ void loop() {
        *  0x01TITLE0x00lorem ipsum0x00
        */
       message.title = Serial.readStringUntil('\0');
-      Serial.println(message.title);
       message.text = Serial.readStringUntil('\0');
-      Serial.println(message.text);
     } else {
       continue;
     }
@@ -64,11 +62,12 @@ void loop() {
 
 void display(String str, char type) {
   char start = 0;
-  str.toCharArray(temp_arr, MESSAGE);
-  int str_len = u8g2.getUTF8Width(temp_arr);
-  
+  Serial.print("== Display ==\nStr len: ");
+  str.toCharArray(temp_arr, MESSAGE); 
   if (type == 'h'){
     u8g2.setFont(u8g2_font_unifont_t_cyrillic);
+    char str_len = u8g2.getUTF8Width(temp_arr);
+    Serial.println(str_len, DEC);
     if (str_len >= LCD_WIDTH) {
       ;
     } else {
@@ -77,6 +76,8 @@ void display(String str, char type) {
     u8g2.drawUTF8(start, FONT_SIZE_TITLE, temp_arr);
   } else if (type == 't') {
     u8g2.setFont(u8g2_font_6x12_t_cyrillic);
+    char str_len = u8g2.getUTF8Width(temp_arr);
+    Serial.println(str_len, DEC);
     if (str_len >= LCD_WIDTH) {
       ;
     } else {
@@ -84,8 +85,6 @@ void display(String str, char type) {
       u8g2.drawUTF8(start, FONT_SIZE_TITLE+FONT_SIZE_TEXT+SPACING, temp_arr);
     }
   }
-  Serial.print("== Display ==\nStr len: ");
-  Serial.println(str_len, DEC);
   Serial.print("Start: ");
   Serial.println(start, DEC);
   Serial.print("Type: ");
