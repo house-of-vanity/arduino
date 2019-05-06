@@ -1,35 +1,36 @@
 #include <U8g2lib.h>
+//#include <MemoryFree.h>
 
 #define MESSAGE 256
-#define image_width 64
-#define image_height 32
+#define image_width 128
+#define image_height 16
 
 U8G2_KS0108_128X64_F u8g2(U8G2_R0, 13, 12, 11, 10, 9, 8, 7, 6,
                           2, 3, 5, 4, U8X8_PIN_NONE, U8X8_PIN_NONE);
 
 static const unsigned char firstSeg = '\00';
 static const unsigned char secondSeg = '\01';
-static const unsigned char thirdSeg = '\10';
-static const unsigned char fourthSeg = '\11';
+static const unsigned char thirdSeg = '\02';
+static const unsigned char fourthSeg = '\03';
 byte image[MESSAGE];
 
 
 void setup() {
   u8g2.begin();
-  u8g2.clearBuffer();
-  Serial.begin(9600);
+  //u8g2.clearBuffer();
+  Serial.begin(19200);
   while (!Serial) {
     ; 
   }
+  /*
+    u8g2.setFont(u8g2_font_6x12_t_cyrillic);
+    u8g2.drawStr(5,15,"Waiting for agent...");
+    u8g2.sendBuffer();
+    */
 }
-
+//freeMemory()
 void loop() {
   while (Serial.available()) {
-    /*
-    message.type = '\0';
-    message.title = '\0';
-    message.text = '\0';
-    */
     unsigned char type = Serial.read();
     Serial.print("Found header:");
     Serial.println(type, DEC);
@@ -43,10 +44,10 @@ void loop() {
         u8g2.drawXBM(0, image_height, image_width, image_height, image);
         break;
       case thirdSeg:
-        u8g2.drawXBM(image_width, 0, image_width, image_height, image);
+        u8g2.drawXBM(0, image_height * 2, image_width, image_height, image);
         break;
       case fourthSeg:
-        u8g2.drawXBM(image_width, image_height, image_width, image_height, image);
+        u8g2.drawXBM(0, image_height * 3, image_width, image_height, image);
         u8g2.sendBuffer();
         break;
       
