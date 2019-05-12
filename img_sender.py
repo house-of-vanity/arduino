@@ -79,11 +79,10 @@ counter = 0
 
 
 while True:
-    counter += 1
-    ARDUINO.write(ram())
-    time.sleep(2)
-#   ARDUINO.write(japanese())
-#   time.sleep(10)
-    for i in range(30):
-        ARDUINO.write(cpu())
-    time.sleep(2)
+#   ARDUINO.write(ram())
+#   time.sleep(2)
+    ARDUINO.write(japanese())
+    time.sleep(10)
+#   for i in range(30):
+#       ARDUINO.write(cpu())
+#   time.sleep(2)
