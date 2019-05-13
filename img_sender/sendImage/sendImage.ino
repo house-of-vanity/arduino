@@ -4,6 +4,7 @@
 #define MESSAGE 256
 #define image_width 128
 #define image_height 16
+#define BAUD_RATE 115200
 
 U8G2_KS0108_128X64_F u8g2(U8G2_R0, 13, 12, 11, 10, 9, 8, 7, 6,
                           2, 3, 5, 4, U8X8_PIN_NONE, U8X8_PIN_NONE);
@@ -18,20 +19,21 @@ byte image[MESSAGE];
 void setup() {
   u8g2.begin();
   //u8g2.clearBuffer();
-  Serial.begin(19200);
+  Serial.begin(BAUD_RATE);
   while (!Serial) {
-    ; 
+    ;
   }
   /*
     u8g2.setFont(u8g2_font_6x12_t_cyrillic);
     u8g2.drawStr(5,15,"Waiting for agent...");
     u8g2.sendBuffer();
-    */
+  */
 }
 //freeMemory()
 void loop() {
   while (Serial.available()) {
     unsigned char type = Serial.read();
+    delay(10);
     Serial.print("Found header:");
     Serial.println(type, DEC);
     Serial.readBytes(image, MESSAGE);
@@ -50,7 +52,7 @@ void loop() {
         u8g2.drawXBM(0, image_height * 3, image_width, image_height, image);
         u8g2.sendBuffer();
         break;
-      
+
     }
   }
 }
