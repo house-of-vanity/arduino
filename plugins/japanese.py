@@ -107,17 +107,30 @@ def japanese():
     img = Image.new('1', (LCD_W, LCD_H), color = 'black')
     font_size_jp = 70
     font_size_latin = 70
+    font_size_latin_sm = int(font_size_latin/1.4)
     spacing = 5
     letter = random.choice(list(alpabet))
     letter = (letter, alpabet[letter])
-    fnt_jp = ImageFont.truetype('koharufont.ttf', font_size_jp)
+    mode = random.randint(0,1)
+#   fnt_jp = ImageFont.truetype('koharufont.ttf', font_size_jp)
     fnt_jp = ImageFont.truetype('DroidSansJapanese.ttf', font_size_jp)
     fnt_latin = ImageFont.truetype('clacon.ttf', font_size_latin)
+    fnt_latin_sm = ImageFont.truetype('clacon.ttf', font_size_latin_sm)
     draw = ImageDraw.Draw(img)
     draw.rectangle((0,0,LCD_H,LCD_W/2), fill="white")
     draw.text((-2, (LCD_H-font_size_jp)*3), letter[0], font=fnt_jp, fill='black')
-    text_offset = draw.textsize(letter[1], font=fnt_latin)[0]
-    draw.text(((LCD_W-text_offset)/4 + LCD_W/2 - spacing*2, (font_size_latin-LCD_H)/2), letter[1], font=fnt_latin, fill='white')
+    if mode == 1:
+        if len(letter[1]) > 2:
+            text_offset = draw.textsize(letter[1], font=fnt_latin_sm)
+            draw.text(((LCD_W-text_offset[0])/4 + LCD_W/2 - spacing*2, (LCD_H-text_offset[1]-spacing)/2), letter[1], font=fnt_latin_sm, fill='white')
+        else:
+            text_offset = draw.textsize(letter[1], font=fnt_latin)
+            draw.text(((LCD_W-text_offset[0])/4 + LCD_W/2 - spacing*2, (LCD_H-text_offset[1]-spacing)/2), letter[1], font=fnt_latin, fill='white')
+    else:
+        log.info('Chosen letter %s (%s)'% (letter[0], letter[1]))
+        text_offset = draw.textsize('?', font=fnt_latin)
+        draw.text(((LCD_W-text_offset[0])/4 + LCD_W/2 - spacing*2, (LCD_H-text_offset[1]-spacing)/2), '?', font=fnt_latin, fill='white')
+
     draw.line(((0,0),(LCD_W-1,0),(LCD_W-1,LCD_H-1),(0, LCD_H-1),(0,0)), fill='white')
     img_io = io.BytesIO()
     img.save(img_io, 'XBM')
